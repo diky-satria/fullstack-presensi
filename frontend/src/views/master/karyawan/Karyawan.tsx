@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import KaryawanModalAdd from "./component/KaryawanModalAdd";
 import KaryawanModalEdit from "./component/KaryawanModalEdit";
 import ToastSuccess from "../../../components/custom/ToastSuccess";
+import logo from "../../../img/success-logo.png";
 
 export default function Karyawan() {
   const [data, setData] = useState<TKaryawan[]>([]);
@@ -207,117 +208,143 @@ export default function Karyawan() {
                     Cari
                   </button>
                 </div>
-                <div className="table-responsive">
-                  <table className="table table-sm table-striped">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>NIP</th>
-                        <th>Nama</th>
-                        <th>Jabatan</th>
-                        <th>Email</th>
-                        <th>Telepon</th>
-                        <th>Alamat</th>
-                        <th>Status</th>
-                        <th>Opsi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((d: TKaryawan, index: number) => {
-                        return (
-                          <tr key={index}>
-                            <td>
-                              {page > 0 ? page * limit + index + 1 : index + 1}
-                            </td>
-                            <td>{d.nip}</td>
-                            <td>{d.nama_karyawan}</td>
-                            <td>{d.nama_jabatan}</td>
-                            <td>{d.email}</td>
-                            <td>{d.telepon}</td>
-                            <td>{d.alamat}</td>
-                            <td>
-                              <Switch
-                                key={d.id}
-                                defaultChecked={d.status ? true : false}
-                                onChange={(e) => onChangeStatus(e, d.user_id)}
-                              />
-                            </td>
-                            <td>
-                              <Button
-                                size="small"
-                                style={{
-                                  backgroundColor: "#12B0A2",
-                                  color: "white",
-                                  border: "#12B0A2",
-                                  marginRight: "2px",
-                                }}
-                                onClick={() =>
-                                  openModalEdit(
-                                    d.user_id,
-                                    d.nip,
-                                    d.nama_karyawan,
-                                    d.jabatan_id,
-                                    d.telepon,
-                                    d.alamat,
-                                    d.email
-                                  )
-                                }
-                              >
-                                Edit
-                              </Button>
-                              <Popconfirm
-                                placement="left"
-                                title={`Apa kamu yakin?`}
-                                description={`ingin menghapus "${d.nama_karyawan}"`}
-                                onConfirm={() => deleteKaryawan(d.user_id)}
-                                okText="Ya"
-                                cancelText="Tidak"
-                              >
-                                <Button type="primary" size="small" danger>
-                                  Hapus
-                                </Button>
-                              </Popconfirm>
-                            </td>
+                {data.length > 0 ? (
+                  <>
+                    <div className="table-responsive">
+                      <table className="table table-sm table-striped">
+                        <thead>
+                          <tr>
+                            <th>No</th>
+                            <th>NIP</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Email</th>
+                            <th>Telepon</th>
+                            <th>Alamat</th>
+                            <th>Status</th>
+                            <th>Opsi</th>
                           </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-                <div
-                  className="row"
-                  style={{
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div className="col">
-                    <p>
-                      Total: {totalRows} - Halaman: {totalRows ? page + 1 : 0}{" "}
-                      dari {totalPage}
-                    </p>
-                  </div>
-                  <div className="col">
-                    <nav
-                      aria-label="Page navigation example"
-                      style={{ float: "right" }}
-                      key={totalRows}
+                        </thead>
+                        <tbody>
+                          {data.map((d: TKaryawan, index: number) => {
+                            return (
+                              <tr key={index}>
+                                <td>
+                                  {page > 0
+                                    ? page * limit + index + 1
+                                    : index + 1}
+                                </td>
+                                <td>{d.nip}</td>
+                                <td>{d.nama_karyawan}</td>
+                                <td>{d.nama_jabatan}</td>
+                                <td>{d.email}</td>
+                                <td>{d.telepon}</td>
+                                <td>{d.alamat}</td>
+                                <td>
+                                  <Switch
+                                    key={d.id}
+                                    defaultChecked={d.status ? true : false}
+                                    onChange={(e) =>
+                                      onChangeStatus(e, d.user_id)
+                                    }
+                                  />
+                                </td>
+                                <td>
+                                  <Button
+                                    size="small"
+                                    style={{
+                                      backgroundColor: "#12B0A2",
+                                      color: "white",
+                                      border: "#12B0A2",
+                                      marginRight: "2px",
+                                    }}
+                                    onClick={() =>
+                                      openModalEdit(
+                                        d.user_id,
+                                        d.nip,
+                                        d.nama_karyawan,
+                                        d.jabatan_id,
+                                        d.telepon,
+                                        d.alamat,
+                                        d.email
+                                      )
+                                    }
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Popconfirm
+                                    placement="left"
+                                    title={`Apa kamu yakin?`}
+                                    description={`ingin menghapus "${d.nama_karyawan}"`}
+                                    onConfirm={() => deleteKaryawan(d.user_id)}
+                                    okText="Ya"
+                                    cancelText="Tidak"
+                                  >
+                                    <Button type="primary" size="small" danger>
+                                      Hapus
+                                    </Button>
+                                  </Popconfirm>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div
+                      className="row"
+                      style={{
+                        justifyContent: "space-between",
+                      }}
                     >
-                      <ReactPaginate
-                        breakLabel="..."
-                        nextLabel="»"
-                        onPageChange={handlePageClickPaginate}
-                        pageCount={totalPage}
-                        previousLabel="«"
-                        containerClassName="pagination"
-                        pageLinkClassName="page-link"
-                        previousLinkClassName="page-link"
-                        nextLinkClassName="page-link"
-                        activeClassName="page-item active"
-                        // disabledLinkClassName=""
-                      />
-                    </nav>
+                      <div className="col">
+                        <p>
+                          Total: {totalRows} - Halaman:{" "}
+                          {totalRows ? page + 1 : 0} dari {totalPage}
+                        </p>
+                      </div>
+                      <div className="col">
+                        <nav
+                          aria-label="Page navigation example"
+                          style={{ float: "right" }}
+                          key={totalRows}
+                        >
+                          <ReactPaginate
+                            breakLabel="..."
+                            nextLabel="»"
+                            onPageChange={handlePageClickPaginate}
+                            pageCount={totalPage}
+                            previousLabel="«"
+                            containerClassName="pagination"
+                            pageLinkClassName="page-link"
+                            previousLinkClassName="page-link"
+                            nextLinkClassName="page-link"
+                            activeClassName="page-item active"
+                            // disabledLinkClassName=""
+                          />
+                        </nav>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    style={{
+                      minHeight: "50vh",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        textAlign: "center",
+                      }}
+                    >
+                      <img src={logo} alt="logo" width={70} />
+                      <h6>Tidak ada karyawan tersedia</h6>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

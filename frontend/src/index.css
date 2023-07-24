@@ -22,16 +22,66 @@ body {
   border-radius: 10px !important;
 }
 
+/* react day picker */
+.rdp {
+  --rdp-cell-size: 30px !important;
+  --rdp-accent-color: #0000ff !important;
+  --rdp-background-color: #5356fb !important;
+  /* Switch to dark colors for dark themes */
+  --rdp-accent-color-dark: #3003e1 !important;
+  --rdp-background-color-dark: #180270 !important;
+  /* Outline border for focused elements */
+  --rdp-outline: 2px solid var(--rdp-accent-color) !important;
+  /* Outline border for focused and selected elements */
+  --rdp-outline-selected: 2px solid rgba(0, 0, 0, 0.75) !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+.rdp-cell {
+  padding: 3px !important;
+}
+.my-selected {
+  color: white !important;
+  background-color: #5356fb !important;
+}
+
 /* responsive */
+@media (min-width: 400px) {
+  /* react day picker */
+  .rdp-cell {
+    padding: 10px !important;
+  }
+}
+
 @media (min-width: 768px) {
   body {
     background-image: url("./img/bubble-tablet.png");
+  }
+
+  /* react day picker */
+  .rdp-cell {
+    padding: 3px !important;
   }
 }
 
 @media (min-width: 992px) {
   body {
     background-image: url("./img/bubble-laptop.png");
+  }
+}
+
+@media (min-width: 1200px) {
+  /* react day picker */
+  .rdp-cell {
+    padding: 5px !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  /* react day picker */
+  .rdp-cell {
+    padding: 7px !important;
   }
 }
 /* responsive */

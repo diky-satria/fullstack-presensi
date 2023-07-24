@@ -6,6 +6,7 @@ import cors from "cors";
 import RootRouter from "./routers/RootRouter";
 import JabatanRouter from "./routers/JabatanRouter";
 import KaryawanRouter from "./routers/KaryawanRouter";
+import HariLiburRouter from "./routers/HariLiburRouter";
 
 class App {
   public app: Express;
@@ -31,6 +32,7 @@ class App {
     this.app.use("/", RootRouter);
     this.app.use("/api/v1/", JabatanRouter);
     this.app.use("/api/v1/", KaryawanRouter);
+    this.app.use("/api/v1/", HariLiburRouter);
   }
 }
 
