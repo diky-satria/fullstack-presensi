@@ -18,7 +18,7 @@ export default function Sidebar() {
     var url_split = url.split("/");
 
     var key = url_split[3];
-    if (key === "component1" || key === "component2") {
+    if (key === "jabatan" || key === "karyawan" || key === "hari_libur") {
       var master_data = document.getElementById("component");
       if (master_data) {
         master_data.click();
@@ -44,7 +44,7 @@ export default function Sidebar() {
       <div className="c-sidebar">
         <div className="c-sidebar-logo">
           <img src={logo} alt="logo" />
-          <span>Admin Panel</span>
+          <span>Presensi</span>
         </div>
         <div className="c-sidebar-menu">
           <div>
@@ -108,28 +108,28 @@ export default function Sidebar() {
                       }}
                     >
                       <NavLink
-                        to="/component1"
+                        to="/jabatan"
                         className="nav-item"
                         onClick={(e) => activeMenu(e)}
-                        id="component1"
+                        id="jabatan"
                       >
                         <AiFillApple className="c-icon-nav-link" />
                         Jabatan
                       </NavLink>
                       <NavLink
-                        to="/component2"
+                        to="/karyawan"
                         className="nav-item"
                         onClick={(e) => activeMenu(e)}
-                        id="component2"
+                        id="karyawan"
                       >
                         <AiFillAndroid className="c-icon-nav-link" />
                         Karyawan
                       </NavLink>
                       <NavLink
-                        to="/component2"
+                        to="/hari_libur"
                         className="nav-item"
                         onClick={(e) => activeMenu(e)}
-                        id="component2"
+                        id="hari_libur"
                       >
                         <AiFillAndroid className="c-icon-nav-link" />
                         Hari Libur
