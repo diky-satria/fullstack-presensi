@@ -51,13 +51,13 @@ class HariLiburController implements IController {
       });
     }
   };
+
   create = async (req: Request, res: Response): Promise<Response> => {
     try {
       const { tanggal, nama } = req.body;
 
-      let date_db = validate_date(tanggal);
       await Models.hari_liburs.create({
-        tanggal: date_db,
+        tanggal: tanggal,
         nama: nama,
       });
 
@@ -73,24 +73,66 @@ class HariLiburController implements IController {
       });
     }
   };
+
   show(req: Request, res: Response): Response | Promise<Response> {
     return res.status(200).json({
       status: 200,
       message: "Hari libur show",
     });
   }
-  update(req: Request, res: Response): Response | Promise<Response> {
-    return res.status(200).json({
-      status: 200,
-      message: "Hari libur update",
-    });
-  }
-  delete(req: Request, res: Response): Response | Promise<Response> {
-    return res.status(200).json({
-      status: 200,
-      message: "Hari libur delete",
-    });
-  }
+
+  update = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { id } = req.params; // id of hari_liburs table
+      const { tanggal, nama } = req.body;
+
+      await Models.hari_liburs.update(
+        {
+          tanggal: tanggal,
+          nama: nama,
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+
+      return res.status(200).json({
+        status: 200,
+        message: "Hari libur berhasil diedit",
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        status: 500,
+        messsage: "Server error",
+      });
+    }
+  };
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { id } = req.params; // id of hari_liburs table
+
+      await Models.hari_liburs.destroy({
+        where: {
+          id: id,
+        },
+      });
+
+      return res.status(200).json({
+        status: 200,
+        message: "Hari libur berhasil dihapus",
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        status: 500,
+        messsage: "Server error",
+      });
+    }
+  };
 }
 
 export default new HariLiburController();

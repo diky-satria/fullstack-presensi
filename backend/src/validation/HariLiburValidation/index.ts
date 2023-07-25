@@ -8,12 +8,9 @@ export const valCreate = [
   body("tanggal")
     .notEmpty()
     .withMessage("Tanggal harus di pilih")
-    .toDate()
-    .withMessage("Format tanggal salah")
     .custom(async (tanggal) => {
-      let tgl = validate_date(tanggal);
       const cek = await sequelize.query(
-        `SELECT * FROM hari_liburs WHERE tanggal = ${tgl}`,
+        `SELECT * FROM hari_liburs WHERE tanggal = '${tanggal}'`,
         { type: QueryTypes.SELECT }
       );
       if (cek.length > 0) {
@@ -37,16 +34,12 @@ export const valUpdate = [
   body("tanggal")
     .notEmpty()
     .withMessage("Tanggal harus di pilih")
-    .toDate()
-    .withMessage("Format tanggal salah")
     .custom(async (tanggal, { req }) => {
-      let tgl = validate_date(tanggal);
-      let tgl_lama = validate_date(req.body.tanggal_lama);
       const cek = await sequelize.query(
-        `SELECT * FROM hari_liburs WHERE tanggal = ${tgl}`,
+        `SELECT * FROM hari_liburs WHERE tanggal = '${tanggal}'`,
         { type: QueryTypes.SELECT }
       );
-      if (tgl !== tgl_lama && cek.length > 0) {
+      if (tanggal !== req.body.tanggal_lama && cek.length > 0) {
         throw new Error("Hari libur di tanggal yang di pilih sudah ada");
       }
       return true;
