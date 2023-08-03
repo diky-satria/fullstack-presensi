@@ -121,94 +121,94 @@ class AbsenController implements IController {
 
       // radius absen tidak boleh lebih dari 20 meter
       let jarak = calculateDistance(latitude, longitude);
-      // if (jarak > 20) {
-      //   return res.status(200).json({
-      //     status: 200,
-      //     message: "Lokasi kamu lebih dari 20 meter dari kantor",
-      //     jarak: jarak,
-      //   });
-      // } else {
-      if (tombol_type === "masuk") {
-        // handle thumbnail
-        let buffer = Buffer.from(foto.split(",")[1], "base64");
-        let filePath = `${process.env.FILE_UPLOAD}/in/${fileName}`;
-        fs.writeFileSync(path.join(__dirname, filePath), buffer);
-
-        await Models.absens.create({
-          user_id: user_id,
-          date_now: date,
-          tgl_in: date,
-          status_in: absen_status,
-          foto_in: fileName,
-          lokasi_in: lokasi,
+      if (jarak > 20) {
+        return res.status(200).json({
+          status: 200,
+          message: "Lokasi kamu lebih dari 20 meter dari kantor",
+          jarak: jarak,
         });
-
-        // ---------------------------
-        // table absens harus ada satu data absens dengan column date_now hari ini, yang selain date_now nya harus null, ini dilakukan karena ketika query di halaman riwayat tapi user_id nya tidak ada, maka yang berurutan itu beberapa akan hilang. Maka dilakukanlah cara ini
-
-        // cek dulu apakah ada data di table absens dengan date_now hari ini dan user_id nya null
-        let kondisi_isTgl_isUserId_null = await sequelize.query(
-          `SELECT * FROM absens WHERE date_now = '${
-            at().tgl_sekarang
-          }' and user_id is null`,
-          { type: QueryTypes.SELECT }
-        );
-        if (kondisi_isTgl_isUserId_null.length <= 0) {
-          await Models.absens.create({
-            date_now: date,
-          });
-        }
-        // --------------------------
-      }
-      if (tombol_type === "pulang") {
-        // handle thumbnail
-        let buffer = Buffer.from(foto.split(",")[1], "base64");
-        let filePath = `${process.env.FILE_UPLOAD}/out/${fileName}`;
-
-        // cek dulu apakah ada absen masuk
-        let kondisi_masuk = await sequelize.query(
-          `SELECT * FROM absens WHERE user_id = ${user_id} AND tgl_in LIKE '%${
-            at().tgl_sekarang
-          }%'`,
-          { type: QueryTypes.SELECT }
-        );
-
-        if (kondisi_masuk.length > 0) {
-          fs.writeFileSync(path.join(__dirname, filePath), buffer);
-          await Models.absens.update(
-            {
-              tgl_out: date,
-              status_out: absen_status,
-              foto_out: fileName,
-              lokasi_out: lokasi,
-            },
-            {
-              where: {
-                date_now: date,
-                user_id: user_id,
-              },
-            }
-          );
-        } else {
+      } else {
+        if (tombol_type === "masuk") {
+          // handle thumbnail
+          let buffer = Buffer.from(foto.split(",")[1], "base64");
+          let filePath = `${process.env.FILE_UPLOAD}/in/${fileName}`;
           fs.writeFileSync(path.join(__dirname, filePath), buffer);
 
           await Models.absens.create({
             user_id: user_id,
             date_now: date,
-            tgl_out: new Date(),
-            status_out: absen_status,
-            foto_out: fileName,
-            lokasi_out: lokasi,
+            tgl_in: date,
+            status_in: absen_status,
+            foto_in: fileName,
+            lokasi_in: lokasi,
           });
-        }
-      }
 
-      return res.status(200).json({
-        status: 200,
-        message: `berhasil absen ${tombol_type}`,
-        jarak: jarak,
-      });
-      // }
+          // ---------------------------
+          // table absens harus ada satu data absens dengan column date_now hari ini, yang selain date_now nya harus null, ini dilakukan karena ketika query di halaman riwayat tapi user_id nya tidak ada, maka yang berurutan itu beberapa akan hilang. Maka dilakukanlah cara ini
+
+          // cek dulu apakah ada data di table absens dengan date_now hari ini dan user_id nya null
+          let kondisi_isTgl_isUserId_null = await sequelize.query(
+            `SELECT * FROM absens WHERE date_now = '${
+              at().tgl_sekarang
+            }' and user_id is null`,
+            { type: QueryTypes.SELECT }
+          );
+          if (kondisi_isTgl_isUserId_null.length <= 0) {
+            await Models.absens.create({
+              date_now: date,
+            });
+          }
+          // --------------------------
+        }
+        if (tombol_type === "pulang") {
+          // handle thumbnail
+          let buffer = Buffer.from(foto.split(",")[1], "base64");
+          let filePath = `${process.env.FILE_UPLOAD}/out/${fileName}`;
+
+          // cek dulu apakah ada absen masuk
+          let kondisi_masuk = await sequelize.query(
+            `SELECT * FROM absens WHERE user_id = ${user_id} AND tgl_in LIKE '%${
+              at().tgl_sekarang
+            }%'`,
+            { type: QueryTypes.SELECT }
+          );
+
+          if (kondisi_masuk.length > 0) {
+            fs.writeFileSync(path.join(__dirname, filePath), buffer);
+            await Models.absens.update(
+              {
+                tgl_out: date,
+                status_out: absen_status,
+                foto_out: fileName,
+                lokasi_out: lokasi,
+              },
+              {
+                where: {
+                  date_now: date,
+                  user_id: user_id,
+                },
+              }
+            );
+          } else {
+            fs.writeFileSync(path.join(__dirname, filePath), buffer);
+
+            await Models.absens.create({
+              user_id: user_id,
+              date_now: date,
+              tgl_out: new Date(),
+              status_out: absen_status,
+              foto_out: fileName,
+              lokasi_out: lokasi,
+            });
+          }
+        }
+
+        return res.status(200).json({
+          status: 200,
+          message: `berhasil absen ${tombol_type}`,
+          jarak: jarak,
+        });
+      }
     } catch (e) {
       console.log(e);
       return res.status(500).json({

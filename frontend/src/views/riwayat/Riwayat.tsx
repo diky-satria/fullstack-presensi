@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Space, DatePicker } from "antd";
-import styled from "styled-components";
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 import axios from "../../interceptor/axios";
 import { TRiwayat } from "../../type";
 import ReactPaginate from "react-paginate";
+import RiwayatModalDetail from "./component/RiwayatModalDetail";
 
 const { RangePicker } = DatePicker;
 
@@ -18,6 +18,18 @@ export default function Riwayat() {
 
   const [fromDate, setFromDate] = useState<string>("");
   const [toDate, setToDate] = useState<string>("");
+
+  const [modalDetail, setModalDetail] = useState<boolean>(false);
+  const [date, setDate] = useState<string | null>(null);
+  const [tglIn, setTglIn] = useState<string | null>(null);
+  const [tglOut, setTglOut] = useState<string | null>(null);
+  const [statusIn, setStatusIn] = useState<string | null>(null);
+  const [statusOut, setStatusOut] = useState<string | null>(null);
+  const [fotoIn, setFotoIn] = useState<string | null>(null);
+  const [fotoOut, setFotoOut] = useState<string | null>(null);
+  const [lokasiIn, setLokasiIn] = useState<string | null>(null);
+  const [lokasiOut, setLokasiOut] = useState<string | null>(null);
+  const [libur, setLibur] = useState<string | null>(null);
 
   useEffect(() => {
     getRiwayat();
@@ -42,7 +54,7 @@ export default function Riwayat() {
     setPage(selectedItem.selected);
   };
 
-  const absenKondisi = (val: string | null, val2: string) => {
+  const absenKondisi = (val: string | null, val2: string | null) => {
     if (val === "tidak_telat") {
       return <span className="badge rounded-pill bg-primary">Absen</span>;
     } else if (val === "telat") {
@@ -58,7 +70,7 @@ export default function Riwayat() {
       return <span className="badge rounded-pill bg-primary">Absen</span>;
     } else {
       if (new Date(`${val2}`).getTime() > new Date().getTime()) {
-        return "-";
+        return <div>-</div>;
       } else {
         return (
           <span className="badge rounded-pill bg-danger">Tidak absen</span>
@@ -116,12 +128,49 @@ export default function Riwayat() {
     }
   };
 
-  const openModal = (status_in: string | null) => {
-    console.log(status_in);
+  const openModal = (
+    date: string | null,
+    tgl_in: string | null,
+    tgl_out: string | null,
+    status_in: string | null,
+    status_out: string | null,
+    foto_in: string | null,
+    foto_out: string | null,
+    lokasi_in: string | null,
+    lokasi_out: string | null,
+    libur: string | null
+  ): void => {
+    setModalDetail(true);
+
+    setDate(date);
+    setTglIn(tgl_in);
+    setTglOut(tgl_out);
+    setStatusIn(status_in);
+    setStatusOut(status_out);
+    setFotoIn(foto_in);
+    setFotoOut(foto_out);
+    setLokasiIn(lokasi_in);
+    setLokasiOut(lokasi_out);
+    setLibur(libur);
+  };
+
+  const closeModalDetail = (): void => {
+    setModalDetail(false);
+
+    setDate(null);
+    setTglIn(null);
+    setTglOut(null);
+    setStatusIn(null);
+    setStatusOut(null);
+    setFotoIn(null);
+    setFotoOut(null);
+    setLokasiIn(null);
+    setLokasiOut(null);
+    setLibur(null);
   };
 
   return (
-    <Div className="c-content">
+    <div className="c-content">
       <div className="c-content-header">
         <h4>Riwayat absensi</h4>
         <p>Semua riwayat absensi</p>
@@ -181,7 +230,20 @@ export default function Riwayat() {
                         className={
                           d.libur ? "tr-custom table-active" : "tr-custom"
                         }
-                        onClick={() => openModal(d.status_in)}
+                        onClick={() =>
+                          openModal(
+                            d.date,
+                            d.tgl_in,
+                            d.tgl_out,
+                            d.status_in,
+                            d.status_out,
+                            d.foto_in,
+                            d.foto_out,
+                            d.lokasi_in,
+                            d.lokasi_out,
+                            d.libur
+                          )
+                        }
                       >
                         <td>{d.date}</td>
                         <td>{d.tgl_in ? d.tgl_in : "-"}</td>
@@ -202,6 +264,7 @@ export default function Riwayat() {
                             ) : (
                               <span className="badge rounded-pill bg-dark">
                                 Masuk
+                                {/* belum dimulai */}
                               </span>
                             )
                           ) : d.libur ? (
@@ -257,8 +320,21 @@ export default function Riwayat() {
           </div>
         </div>
       </div>
-    </Div>
+      <RiwayatModalDetail
+        modalDetail={modalDetail}
+        closeModalDetail={closeModalDetail}
+        date={date}
+        tglIn={tglIn}
+        tglOut={tglOut}
+        statusIn={statusIn}
+        statusOut={statusOut}
+        fotoIn={fotoIn}
+        fotoOut={fotoOut}
+        lokasiIn={lokasiIn}
+        lokasiOut={lokasiOut}
+        libur={libur}
+        absenKondisi={(val, val2) => absenKondisi(val, val2)}
+      />
+    </div>
   );
 }
-
-const Div = styled.div``;
