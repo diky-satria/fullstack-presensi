@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import logo from "../img/like.png";
 import {
@@ -11,8 +11,12 @@ import {
   AiFillContacts,
 } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
+import Clock from "react-clock";
+import "react-clock/dist/Clock.css";
 
 export default function Sidebar() {
+  const [value, setValue] = useState(new Date());
+
   useEffect(() => {
     var url = window.location.href;
     var url_split = url.split("/");
@@ -28,6 +32,12 @@ export default function Sidebar() {
         sub_nav.click();
       }
     }
+
+    // clock
+    const interval = setInterval(() => setValue(new Date()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const activeMenu = (e) => {
@@ -48,6 +58,9 @@ export default function Sidebar() {
         </div>
         <div className="c-sidebar-menu">
           <div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Clock value={value} renderNumbers={true} />
+            </div>
             <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-4 mt-4 mb-1 text-muted">
               <span
                 style={{
@@ -275,6 +288,19 @@ const Div = styled.div`
     justify-content: center;
     align-items: center;
   }
+
+  /* CLOCK */
+  .react-clock__face {
+    border: 3px solid #5356fb;
+  }
+  .react-clock__mark__number {
+    color: #5356fb;
+    font-weight: bold;
+  }
+  .react-clock__second-hand__body {
+    background-color: red;
+  }
+  /* END CLOCK */
 
   /* responsive */
   @media (min-width: 768px) {
