@@ -7,6 +7,7 @@ import KaryawanModalAdd from "./component/KaryawanModalAdd";
 import KaryawanModalEdit from "./component/KaryawanModalEdit";
 import ToastSuccess from "../../../components/custom/ToastSuccess";
 import logo from "../../../img/success-logo.png";
+import ToastError from "../../../components/custom/ToastError";
 
 export default function Karyawan() {
   const [data, setData] = useState<TKaryawan[]>([]);
@@ -126,10 +127,14 @@ export default function Karyawan() {
   };
 
   const deleteKaryawan = async (id: number) => {
-    let response = await axios.delete(`/api/v1/karyawan/${id}`);
+    try {
+      let response = await axios.delete(`/api/v1/karyawan/${id}`);
 
-    ToastSuccess(response.data.message, "top-right");
-    getKaryawanType("delete");
+      ToastSuccess(response.data.message, "top-right");
+      getKaryawanType("delete");
+    } catch (e: any) {
+      ToastError(e.response.data.errors, "top-right");
+    }
   };
 
   const changeSearchClick = (): void => {
@@ -185,8 +190,8 @@ export default function Karyawan() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Cari kode, nama..."
-                    aria-label="Cari kode, nama..."
+                    placeholder="Cari nip, nama..."
+                    aria-label="Cari nip, nama..."
                     aria-describedby="button-addon2"
                     style={{
                       boxShadow: "none",

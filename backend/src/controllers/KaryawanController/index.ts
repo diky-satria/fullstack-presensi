@@ -162,6 +162,19 @@ class KaryawanController implements IController {
   delete = async (req: Request, res: Response): Promise<Response> => {
     try {
       const { id } = req.params; // in router use user_id instead of id
+
+      // cek dulu di table absen ada data yang punya user_id = id, kalo ada jangan hapus
+      let data = await sequelize.query(
+        `SELECT * FROM absens WHERE user_id = ${id} limit 1`,
+        { type: QueryTypes.SELECT }
+      );
+      if (data.length > 0) {
+        return res.status(400).json({
+          status: 400,
+          errors: "Data parent tidak bisa dihapus",
+        });
+      }
+
       await Models.karyawans.destroy({
         where: {
           user_id: id,

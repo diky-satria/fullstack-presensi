@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../img/success-logo.png";
+import logo from "../img/like.png";
 import { Button } from "antd";
 import { NavLink } from "react-router-dom";
 

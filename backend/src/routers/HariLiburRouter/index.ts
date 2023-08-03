@@ -7,7 +7,7 @@ class HariLiburRouter extends BaseRouter {
     this.route.get("/hari_libur", HariLiburController.index);
     this.route.post("/hari_libur", valCreate, HariLiburController.create);
     this.route.patch("/hari_libur/:id", valUpdate, HariLiburController.update);
-    this.route.delete("/hari_libur/:id", HariLiburController.delete);
+    this.route.delete("/hari_libur/:tanggal", HariLiburController.delete);
   }
 }
 

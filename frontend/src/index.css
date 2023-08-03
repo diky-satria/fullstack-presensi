@@ -46,6 +46,27 @@ body {
   background-color: #5356fb !important;
 }
 
+/* ant date panel */
+.ant-picker-panels {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.ant-picker-panel-container {
+  margin-top: -18% !important;
+  margin-left: -10% !important;
+  transform: scale(0.8) !important;
+}
+
+/* halaman riwayat */
+.table > tbody > tr.table-active > td {
+  background: pink;
+}
+.table > tbody > tr.tr-custom:hover > td {
+  transform: scale(1.1);
+  background: #d0d2ff;
+  cursor: pointer;
+}
+
 /* responsive */
 @media (min-width: 400px) {
   /* react day picker */
@@ -62,6 +83,20 @@ body {
   /* react day picker */
   .rdp-cell {
     padding: 3px !important;
+  }
+
+  /* ant date panel */
+  .ant-picker-panel-container {
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    transform: scale(1) !important;
+  }
+}
+
+@media (min-width: 950px) {
+  /* ant date panel */
+  .ant-picker-panels {
+    flex-direction: row !important;
   }
 }
 

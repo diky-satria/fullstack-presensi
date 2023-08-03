@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import logo from "../img/success-logo.png";
+import logo from "../img/like.png";
 import {
   AiFillWindows,
   AiFillApple,
@@ -139,7 +139,7 @@ export default function Sidebar() {
                 </div>
               </div>
               <NavLink
-                to="/contact"
+                to="/absensi"
                 className="nav-item"
                 onClick={(e) => activeMenu(e)}
               >
@@ -147,7 +147,7 @@ export default function Sidebar() {
                 Absensi
               </NavLink>
               <NavLink
-                to="/chart"
+                to="/riwayat"
                 className="nav-item"
                 onClick={(e) => activeMenu(e)}
               >

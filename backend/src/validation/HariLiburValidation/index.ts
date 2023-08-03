@@ -9,8 +9,9 @@ export const valCreate = [
     .notEmpty()
     .withMessage("Tanggal harus di pilih")
     .custom(async (tanggal) => {
+      let tgl = validate_date(tanggal); // jadikan tanggal ke format 2023-06-01 atau 2023/06/01
       const cek = await sequelize.query(
-        `SELECT * FROM hari_liburs WHERE tanggal = '${tanggal}'`,
+        `SELECT * FROM hari_liburs WHERE tanggal = ${tgl}`,
         { type: QueryTypes.SELECT }
       );
       if (cek.length > 0) {
@@ -18,7 +19,7 @@ export const valCreate = [
       }
       return true;
     }),
-  body("nama").notEmpty().withMessage("Nama harus di isi"),
+  body("nama").notEmpty().withMessage("Keterangan libur harus di isi"),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

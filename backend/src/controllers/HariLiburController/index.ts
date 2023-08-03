@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import IController from "../IController";
 import { sequelize } from "../../db/models";
 import { QueryTypes } from "sequelize";
-import { from_date, to_date, validate_date } from "../../helpers";
+import { from_date, to_date } from "../../helpers";
 const Models = require("../../db/models/index.js");
 
 class HariLiburController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
-      let fd: string = req.params.from_date || from_date();
-      let td: string = req.params.to_date || to_date();
+      let fd: any = req.query.from_date || from_date();
+      let td: any = req.query.to_date || to_date();
 
       let page: number = Number(req.query.page) || 0;
       let limit: number = Number(req.query.limit) || 10;
@@ -20,7 +20,7 @@ class HariLiburController implements IController {
       let offset: number = page * limit;
 
       let total = await sequelize.query(
-        `WITH RECURSIVE date_range AS (SELECT DATE(${fd}) as date UNION ALL SELECT DATE_ADD(date, INTERVAL 1 DAY) FROM date_range WHERE date < ${td} ) SELECT count(date) as total FROM date_range left join hari_liburs on date_range.date = hari_liburs.tanggal ${search_db}`,
+        `WITH RECURSIVE date_range AS (SELECT DATE('${fd}') as date UNION ALL SELECT DATE_ADD(date, INTERVAL 1 DAY) FROM date_range WHERE date < '${td}' ) SELECT count(date) as total FROM date_range left join hari_liburs on date_range.date = hari_liburs.tanggal ${search_db}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -30,7 +30,7 @@ class HariLiburController implements IController {
       //   sql format date
       // DATE_FORMAT(date, "%a, %e-%c-%Y")
       let data = await sequelize.query(
-        `WITH RECURSIVE date_range AS (SELECT DATE(${fd}) as date UNION ALL SELECT DATE_ADD(date, INTERVAL 1 DAY) FROM date_range WHERE date < ${td} ) SELECT date as tanggal, nama FROM date_range left join hari_liburs on date_range.date = hari_liburs.tanggal ${search_db} order by date asc limit ${offset},${limit}`,
+        `WITH RECURSIVE date_range AS (SELECT DATE('${fd}') as date UNION ALL SELECT DATE_ADD(date, INTERVAL 1 DAY) FROM date_range WHERE date < '${td}' ) SELECT date as tanggal, nama FROM date_range left join hari_liburs on date_range.date = hari_liburs.tanggal ${search_db} order by date asc limit ${offset},${limit}`,
         { type: QueryTypes.SELECT }
       );
 
@@ -42,6 +42,8 @@ class HariLiburController implements IController {
         limit: limit,
         total_rows: total[0].total,
         total_page: total_page,
+        from_date: fd,
+        to_date: td,
       });
     } catch (e) {
       console.log(e);
@@ -113,17 +115,17 @@ class HariLiburController implements IController {
 
   delete = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { id } = req.params; // id of hari_liburs table
+      const { tanggal } = req.params; // tanggal of hari_liburs table
 
       await Models.hari_liburs.destroy({
         where: {
-          id: id,
+          tanggal: tanggal,
         },
       });
 
       return res.status(200).json({
         status: 200,
-        message: "Hari libur berhasil dihapus",
+        message: "Hari libur berhasil diganti menjadi masuk",
       });
     } catch (e) {
       console.log(e);

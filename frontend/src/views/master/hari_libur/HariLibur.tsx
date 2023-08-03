@@ -1,19 +1,47 @@
-import React, { useState } from "react";
-import { id } from "date-fns/locale";
-import { DayPicker } from "react-day-picker";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Form, Input } from "antd";
-import ButtonCustom from "../../../components/custom/ButtonCustom";
+import HariLiburAll from "./component/HariLiburAll";
+import HariLiburAdd from "./component/HariLiburAdd";
+import { TDisabledDays, THariLibur } from "../../../type";
+import axios from "../../../interceptor/axios";
 
 export default function HariLibur() {
-  let date = new Date();
-  let date_push = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const disabledDays = [{ from: new Date(2000, 1, 1), to: date_push }];
+  const [data, setData] = useState<THariLibur[]>([]);
+  const [page, setPage] = useState<number>(0);
+  const [totalPage, setTotalPage] = useState<number>(0);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [limit] = useState<number>(10);
 
-  const [selectedDay, setSelectedDay] = useState<Date>();
+  const [fromDate, setFromDate] = useState<string>("");
+  const [toDate, setToDate] = useState<string>("");
 
-  const add = (): void => {
-    console.log(selectedDay);
+  let date: Date = new Date();
+  let dateMonthDefault: Date = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
+  const disabledDays: TDisabledDays[] = [
+    { from: new Date(2000, 1, 1), to: dateMonthDefault },
+  ];
+
+  useEffect(() => {
+    getHariLibur();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  const getHariLibur = async () => {
+    let response = await axios.get(
+      `/api/v1/hari_libur?page=${page}&limit=${limit}&from_date=${fromDate}&to_date=${toDate}`
+    );
+
+    setData(response.data.data);
+    setPage(response.data.page);
+    setTotalPage(response.data.total_page);
+    setTotalRows(response.data.total_rows);
+
+    setFromDate(response.data.from_date);
+    setToDate(response.data.to_date);
   };
 
   return (
@@ -24,56 +52,28 @@ export default function HariLibur() {
       </div>
       <div className="row">
         <div className="col-lg-8 col-xl-8 col-md-6 col-12 mb-3">
-          <div className="card">
-            <div className="card-body">
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Tanggal</th>
-                    <th>Hari libur</th>
-                    <th>Opsi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>dfwwd</td>
-                    <td>qdwdq</td>
-                    <td>asd</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <HariLiburAll
+            data={data}
+            page={page}
+            setPage={setPage}
+            limit={limit}
+            totalPage={totalPage}
+            totalRows={totalRows}
+            handlePageClick={(selected) => setPage(selected)}
+            getHariLibur={getHariLibur}
+            disabledDays={disabledDays}
+            setFromDate={setFromDate}
+            setToDate={setToDate}
+            fromDate={fromDate}
+            toDate={toDate}
+          />
         </div>
         <div className="col-lg-4 col-xl-4 col-md-6 col-12 mb-3">
-          <div className="card">
-            <div className="card-body">
-              <DayPicker
-                selected={selectedDay}
-                onSelect={setSelectedDay}
-                defaultMonth={date_push}
-                mode="single"
-                disabled={disabledDays}
-                locale={id}
-                modifiersClassNames={{
-                  selected: "my-selected",
-                }}
-              />
-            </div>
-          </div>
-          <div className="card mt-3">
-            <div className="card-body">
-              <div className="form-group">
-                <label>Nama hari libur</label>
-                <Form>
-                  <Input />
-                </Form>
-              </div>
-              <ButtonCustom text="Tambah" loading={false} click={add} />
-            </div>
-          </div>
+          <HariLiburAdd
+            dateMonthDefault={dateMonthDefault}
+            disabledDays={disabledDays}
+            getHariLibur={getHariLibur}
+          />
         </div>
       </div>
     </Div>

@@ -5,8 +5,8 @@ import Layout from "../views/layout/Layout";
 import Dashboard from "../views/dashboard/Dashboard";
 import Login from "../views/Login";
 import Jabatan from "../views/master/jabatan/Jabatan";
-import Contact from "../views/contact/Contact";
-import Chart from "../views/chart/Chart";
+import Absensi from "../views/absensi/Absensi";
+import Riwayat from "../views/riwayat/Riwayat";
 import Wallet from "../views/wallet/Wallet";
 import Setting1 from "../views/setting/Setting1";
 import Setting2 from "../views/setting/Setting2";
@@ -54,18 +54,18 @@ export default function Router() {
         }
       />
       <Route
-        path="/contact"
+        path="/absensi"
         element={
           <Layout>
-            <Contact />
+            <Absensi />
           </Layout>
         }
       />
       <Route
-        path="/chart"
+        path="/riwayat"
         element={
           <Layout>
-            <Chart />
+            <Riwayat />
           </Layout>
         }
       />
