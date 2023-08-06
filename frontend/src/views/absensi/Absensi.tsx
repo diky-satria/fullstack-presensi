@@ -21,6 +21,7 @@ export default function Contact() {
   const [tombolStatus, setTombolStatus] = useState<boolean>(false);
   const [absenStatus, setAbsenStatus] = useState<string>("");
   const [sudahAbsen, setSudahAbsen] = useState<boolean>(false);
+  const [messageAbsen, setMessageAbsen] = useState<string>("");
 
   useEffect(() => {
     getTombolAbsensi();
@@ -32,6 +33,7 @@ export default function Contact() {
     setTombolStatus(response.data.tombol_status);
     setAbsenStatus(response.data.absen_status);
     setSudahAbsen(response.data.sudah_absen);
+    setMessageAbsen(response.data.message);
 
     // ambil lokasi latitude dan longitude
     navigator.geolocation.getCurrentPosition((position) => {
@@ -178,7 +180,7 @@ export default function Contact() {
           <div className="col cov2">
             <div style={{ textAlign: "center" }}>
               <img src={logo} alt="logo" width="100" />
-              <h5>Absensi belum di mulai</h5>
+              <h5>{messageAbsen}</h5>
             </div>
           </div>
         </div>

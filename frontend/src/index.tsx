@@ -11,13 +11,22 @@ import "bootstrap/dist/js/bootstrap.min.js";
 // react day picker
 import "react-day-picker/dist/style.css";
 
+// redux
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/store";
+import { Provider } from "react-redux";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   // <React.StrictMode>
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
   </BrowserRouter>
   // </React.StrictMode>
 );

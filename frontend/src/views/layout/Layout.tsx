@@ -1,15 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlineAlignLeft, AiOutlineAlignRight } from "react-icons/ai";
 import Sidebar from "../../components/Sidebar";
 import Overlay from "../../components/Overlay";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutApi } from "../../redux/auth/action";
+import axios from "../../interceptor/axios";
 
 type Props = {
   children: JSX.Element;
 };
 
 export default function Layout({ children }: Props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user } = useSelector((state: any) => state.auth);
+
+  useEffect(() => {
+    getMeCompare();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const getMeCompare = async () => {
+    try {
+      let response = await axios.get("/api/v1/me");
+
+      if (
+        !user ||
+        user.id !== response.data.id ||
+        user.nama !== response.data.nama ||
+        user.email !== response.data.email ||
+        user.role !== response.data.role
+      ) {
+        logout();
+      }
+    } catch (e) {
+      logout();
+    }
+  };
+
   const clickHumbergerMenu = () => {
     var humbergurIcon = document.querySelector(".c-sidebar");
     var dashboard = document.querySelector(".c-right-content");
@@ -26,9 +57,18 @@ export default function Layout({ children }: Props) {
     }
   };
 
+  const logout = () => {
+    dispatch(logoutApi(navigate));
+  };
+
   return (
     <Div>
-      <Sidebar />
+      <Sidebar
+        dispatch={dispatch}
+        navigate={navigate}
+        user={user}
+        logout={logout}
+      />
       <div className="c-right-content">
         <div className="c-navbar">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -83,22 +123,20 @@ export default function Layout({ children }: Props) {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      Administrator
+                      {user.nama}
                     </span>
                     <ul
                       className="dropdown-menu c-dropdown-menu"
                       aria-labelledby="navbarDropdown"
                     >
-                      {/* <li>
-                        <span className="dropdown-item">Change Password</span>
+                      <li onClick={() => navigate("/ubah_password")}>
+                        <span className="dropdown-item">Ubah Password</span>
                       </li>
-                      <li>
+                      {/* <li>
                         <span className="dropdown-item">Edit Profil</span>
                       </li> */}
-                      <li>
-                        <NavLink to="/" style={{ textDecoration: "none" }}>
-                          <span className="dropdown-item">Logout</span>
-                        </NavLink>
+                      <li onClick={logout}>
+                        <span className="dropdown-item">Logout</span>
                       </li>
                     </ul>
                   </li>

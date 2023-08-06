@@ -1,10 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from "antd";
-import logo from "../img/success-logo.png";
-import { NavLink } from "react-router-dom";
+import logo from "../img/like.png";
+import { NavLink, useNavigate } from "react-router-dom";
+import { TError } from "../type";
+import { useSelector } from "react-redux";
+import axios from "../interceptor/axios";
 
 export default function ForgotPassword() {
+  const { user } = useSelector((state: any) => state.auth);
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<TError>();
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (user) {
+      if (user.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/absensi");
+      }
+    }
+  }, [user, navigate]);
+
+  const kirimEmail = async () => {
+    setLoading(true);
+    setSuccessMessage("");
+    try {
+      let response = await axios.post("/api/v1/lupa_password", {
+        email: email,
+      });
+
+      setSuccessMessage(response.data.msg);
+      setLoading(false);
+      setError({ msg: "", value: "", param: "", location: "" });
+      setEmail("");
+    } catch (e: any) {
+      setError(e.response.data.errors);
+      setLoading(false);
+    }
+  };
+
   return (
     <Div>
       <div className="c-login-container">
@@ -13,19 +52,36 @@ export default function ForgotPassword() {
             <img src={logo} alt={logo} width={80} />
           </div>
           <div className="c-login-title my-4">
-            <h4>Forgot Password</h4>
+            <h4>Lupa Password</h4>
           </div>
         </div>
         <div className="c-login-content">
-          <form>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control c-form-control"
-                placeholder="Email"
-              />
+          {successMessage ? (
+            <div className="alert alert-success c-alert-success" role="alert">
+              {successMessage}
             </div>
-          </form>
+          ) : (
+            ""
+          )}
+          <div className="form-group">
+            <input
+              type="text"
+              className="form-control c-form-control"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {error && error.param === "email" ? (
+              <small
+                className="form-text"
+                style={{ color: "red", marginLeft: "10px" }}
+              >
+                {error.msg}
+              </small>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
         <div className="c-login-footer">
           <Button
@@ -36,8 +92,10 @@ export default function ForgotPassword() {
               backgroundColor: "#5356FB",
               border: "1px solid #5356FB",
             }}
+            onClick={kirimEmail}
+            loading={loading}
           >
-            Send
+            Kirim Link
           </Button>
 
           <div
@@ -47,7 +105,7 @@ export default function ForgotPassword() {
               marginTop: "20px",
             }}
           >
-            Don't forget your'e email?
+            Tidak lupa password?
             <NavLink to="/" style={{ textDecoration: "none" }}>
               <span
                 style={{
@@ -57,7 +115,7 @@ export default function ForgotPassword() {
                   marginLeft: "5px",
                 }}
               >
-                Login now
+                Login sekarang
               </span>
             </NavLink>
           </div>
@@ -85,11 +143,11 @@ const Div = styled.div`
     border-radius: 10px;
   }
   .c-form-control {
-    margin-bottom: 15px;
+    margin-top: 15px;
     box-shadow: none;
     padding: 9px 20px;
     border-radius: 20px;
-    background-color: #faf2ffce;
+    background-color: #dbdbdbce;
     backdrop-filter: blur(5px) !important;
     -webkit-backdrop-filter: blur(5px) !important;
     border: 1px solid transparent;
@@ -103,5 +161,6 @@ const Div = styled.div`
   .c-btn-login {
     border-radius: 20px;
     width: 100%;
+    margin-top: 15px;
   }
 `;

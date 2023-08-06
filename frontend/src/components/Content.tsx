@@ -8,14 +8,14 @@ export default function Content() {
     var dashboard = document.querySelector(".c-right-content");
     var overlay = document.querySelector(".c-overlay");
 
-    if (humbergurIcon.classList.contains("c-sidebar-show")) {
-      humbergurIcon.classList.remove("c-sidebar-show");
-      dashboard.classList.remove("c-right-content-show");
-      overlay.classList.remove("c-overlay-show");
+    if (humbergurIcon?.classList.contains("c-sidebar-show")) {
+      humbergurIcon?.classList.remove("c-sidebar-show");
+      dashboard?.classList.remove("c-right-content-show");
+      overlay?.classList.remove("c-overlay-show");
     } else {
-      humbergurIcon.classList.add("c-sidebar-show");
-      dashboard.classList.add("c-right-content-show");
-      overlay.classList.add("c-overlay-show");
+      humbergurIcon?.classList.add("c-sidebar-show");
+      dashboard?.classList.add("c-right-content-show");
+      overlay?.classList.add("c-overlay-show");
     }
   };
 

@@ -67,6 +67,11 @@ body {
   cursor: pointer;
 }
 
+/* kode ini untuk handle runtime error ketika interceptor unauthorized */
+body > iframe {
+  display: none;
+}
+
 /* responsive */
 @media (min-width: 400px) {
   /* react day picker */

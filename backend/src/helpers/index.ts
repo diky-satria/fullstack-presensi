@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import moment from "moment";
 dotenv.config();
 
 export const from_date = (): string => {
@@ -56,8 +57,8 @@ export const at = () => {
   let toleransi: number = 50;
 
   // tgl sekarang string untuk cek ke db
-  let tgl_sekarang_date: Date = new Date();
-  let tgl_sekarang = tgl_sekarang_date.toISOString().split("T")[0];
+  let date_moment = moment();
+  let tgl_sekarang = date_moment.format("YYYY-MM-DD");
 
   return {
     masuk,
@@ -97,4 +98,15 @@ export const calculateDistance = (lat2: number, lon2: number): number => {
 
 export const toRadians = (degrees: number): number => {
   return degrees * (Math.PI / 180);
+};
+
+export const ucwords = (str: string): string => {
+  const arr = str.split(" ");
+
+  for (var i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+  }
+
+  const str2 = arr.join(" ");
+  return str2;
 };

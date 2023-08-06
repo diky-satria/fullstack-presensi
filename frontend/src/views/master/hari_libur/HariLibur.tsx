@@ -64,8 +64,6 @@ export default function HariLibur() {
             disabledDays={disabledDays}
             setFromDate={setFromDate}
             setToDate={setToDate}
-            fromDate={fromDate}
-            toDate={toDate}
           />
         </div>
         <div className="col-lg-4 col-xl-4 col-md-6 col-12 mb-3">

@@ -23,8 +23,6 @@ interface Props {
   disabledDays: TDisabledDays[];
   setFromDate: (value: string) => void;
   setToDate: (value: string) => void;
-  fromDate: string;
-  toDate: string;
 }
 
 export default function HariLiburAll(props: Props) {
@@ -118,6 +116,7 @@ export default function HariLiburAll(props: Props) {
                     dayjs().startOf("month"),
                     dayjs().endOf("month"),
                   ]}
+                  allowClear={false}
                 />
               </Space>
             </div>

@@ -61,3 +61,14 @@ export type TRiwayat = {
   user_id: number | null;
   nama: string | null;
 };
+
+export type TUserSelect = {
+  label: string;
+  value: number;
+};
+
+export type TLoginApi = {
+  username: string;
+  password: string;
+  remember_me: boolean;
+};

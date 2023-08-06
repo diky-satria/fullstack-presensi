@@ -4,13 +4,13 @@ import styled from "styled-components";
 export default function Overlay() {
   const clickOverlay = () => {
     var humbergurIcon = document.querySelector(".c-sidebar");
-    humbergurIcon.classList.remove("c-sidebar-show");
+    humbergurIcon?.classList.remove("c-sidebar-show");
 
     var overlay = document.querySelector(".c-overlay");
-    overlay.classList.remove("c-overlay-show");
+    overlay?.classList.remove("c-overlay-show");
 
     var dashboard = document.querySelector(".c-right-content");
-    dashboard.classList.remove("c-right-content-show");
+    dashboard?.classList.remove("c-right-content-show");
   };
 
   return (

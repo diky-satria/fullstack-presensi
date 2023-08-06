@@ -6,6 +6,7 @@ import axios from "../../interceptor/axios";
 import { TRiwayat } from "../../type";
 import ReactPaginate from "react-paginate";
 import RiwayatModalDetail from "./component/RiwayatModalDetail";
+import ToastError from "../../components/custom/ToastError";
 
 const { RangePicker } = DatePicker;
 
@@ -55,8 +56,8 @@ export default function Riwayat() {
   };
 
   const absenKondisi = (val: string | null, val2: string | null) => {
-    if (val === "tidak_telat") {
-      return <span className="badge rounded-pill bg-primary">Absen</span>;
+    if (val === "tepat_waktu_masuk") {
+      return <span className="badge rounded-pill bg-primary">Tepat waktu</span>;
     } else if (val === "telat") {
       return (
         <span
@@ -66,8 +67,8 @@ export default function Riwayat() {
           Telat
         </span>
       );
-    } else if (val === "absen_pulang") {
-      return <span className="badge rounded-pill bg-primary">Absen</span>;
+    } else if (val === "tepat_waktu_pulang") {
+      return <span className="badge rounded-pill bg-primary">Tepat waktu</span>;
     } else {
       if (new Date(`${val2}`).getTime() > new Date().getTime()) {
         return <div>-</div>;
@@ -194,6 +195,7 @@ export default function Riwayat() {
                         dayjs().startOf("month"),
                         dayjs().endOf("month"),
                       ]}
+                      allowClear={false}
                     />
                   </Space>
                 </div>

@@ -14,7 +14,15 @@ import { NavLink } from "react-router-dom";
 import Clock from "react-clock";
 import "react-clock/dist/Clock.css";
 
-export default function Sidebar() {
+import { logoutApi } from "../redux/auth/action";
+
+interface Props {
+  dispatch: any;
+  navigate: any;
+  user: any;
+  logout(): void;
+}
+export default function Sidebar(props: Props) {
   const [value, setValue] = useState(new Date());
 
   useEffect(() => {
@@ -40,13 +48,17 @@ export default function Sidebar() {
     };
   }, []);
 
-  const activeMenu = (e) => {
+  const activeMenu = (e: any) => {
     var navLink = document.getElementsByClassName("nav-item");
     for (var i = 0; i < navLink.length; i++) {
       navLink[i].classList.remove("active");
     }
 
     e.currentTarget.classList.add("active");
+  };
+
+  const logout = () => {
+    props.dispatch(logoutApi(props.navigate));
   };
 
   return (
@@ -74,106 +86,127 @@ export default function Sidebar() {
               </span>
             </h6>
             <ul className="nav flex-column mb-2 c-nav">
+              {props.user && props.user.role === "admin" ? (
+                <>
+                  <NavLink
+                    to="/dashboard"
+                    className="nav-item"
+                    onClick={(e) => activeMenu(e)}
+                  >
+                    <AiFillWindows className="c-icon-nav-link" />
+                    Dashboard
+                  </NavLink>
+                  <div className="accordion" id="accordionExample">
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="headingOne">
+                        <li
+                          className="nav-item"
+                          // type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseOne"
+                          // aria-expanded="true"
+                          aria-controls="collapseOne"
+                          onClick={(e) => activeMenu(e)}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                          id="component"
+                        >
+                          <div>
+                            <AiFillHdd className="c-icon-nav-link" />
+                            Master Data
+                          </div>
+                          <AiOutlineArrowDown />
+                        </li>
+                      </h2>
+                      <div
+                        id="collapseOne"
+                        className="collapse"
+                        aria-labelledby="headingOne"
+                        data-parent="#accordionExample"
+                      >
+                        <div
+                          style={{
+                            marginLeft: "10px",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <NavLink
+                            to="/jabatan"
+                            className="nav-item"
+                            onClick={(e) => activeMenu(e)}
+                            id="jabatan"
+                          >
+                            <AiFillApple className="c-icon-nav-link" />
+                            Jabatan
+                          </NavLink>
+                          <NavLink
+                            to="/karyawan"
+                            className="nav-item"
+                            onClick={(e) => activeMenu(e)}
+                            id="karyawan"
+                          >
+                            <AiFillAndroid className="c-icon-nav-link" />
+                            Karyawan
+                          </NavLink>
+                          <NavLink
+                            to="/hari_libur"
+                            className="nav-item"
+                            onClick={(e) => activeMenu(e)}
+                            id="hari_libur"
+                          >
+                            <AiFillAndroid className="c-icon-nav-link" />
+                            Hari Libur
+                          </NavLink>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+
+              {props.user && props.user.role === "user" ? (
+                <>
+                  <NavLink
+                    to="/absensi"
+                    className="nav-item"
+                    onClick={(e) => activeMenu(e)}
+                  >
+                    <AiFillContacts className="c-icon-nav-link" />
+                    Absensi
+                  </NavLink>
+                  <NavLink
+                    to="/riwayat"
+                    className="nav-item"
+                    onClick={(e) => activeMenu(e)}
+                  >
+                    <AiFillPieChart className="c-icon-nav-link" />
+                    Riwayat
+                  </NavLink>
+                </>
+              ) : (
+                ""
+              )}
               <NavLink
-                to="/dashboard"
+                to="/ubah_password"
                 className="nav-item"
                 onClick={(e) => activeMenu(e)}
               >
                 <AiFillWindows className="c-icon-nav-link" />
-                Dashboard
-              </NavLink>
-              <div className="accordion" id="accordionExample">
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="headingOne">
-                    <li
-                      className="nav-item"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      // aria-expanded="true"
-                      aria-controls="collapseOne"
-                      onClick={(e) => activeMenu(e)}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                      id="component"
-                    >
-                      <div>
-                        <AiFillHdd className="c-icon-nav-link" />
-                        Master Data
-                      </div>
-                      <AiOutlineArrowDown />
-                    </li>
-                  </h2>
-                  <div
-                    id="collapseOne"
-                    className="collapse"
-                    aria-labelledby="headingOne"
-                    data-parent="#accordionExample"
-                  >
-                    <div
-                      style={{
-                        marginLeft: "10px",
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <NavLink
-                        to="/jabatan"
-                        className="nav-item"
-                        onClick={(e) => activeMenu(e)}
-                        id="jabatan"
-                      >
-                        <AiFillApple className="c-icon-nav-link" />
-                        Jabatan
-                      </NavLink>
-                      <NavLink
-                        to="/karyawan"
-                        className="nav-item"
-                        onClick={(e) => activeMenu(e)}
-                        id="karyawan"
-                      >
-                        <AiFillAndroid className="c-icon-nav-link" />
-                        Karyawan
-                      </NavLink>
-                      <NavLink
-                        to="/hari_libur"
-                        className="nav-item"
-                        onClick={(e) => activeMenu(e)}
-                        id="hari_libur"
-                      >
-                        <AiFillAndroid className="c-icon-nav-link" />
-                        Hari Libur
-                      </NavLink>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <NavLink
-                to="/absensi"
-                className="nav-item"
-                onClick={(e) => activeMenu(e)}
-              >
-                <AiFillContacts className="c-icon-nav-link" />
-                Absensi
-              </NavLink>
-              <NavLink
-                to="/riwayat"
-                className="nav-item"
-                onClick={(e) => activeMenu(e)}
-              >
-                <AiFillPieChart className="c-icon-nav-link" />
-                Riwayat
+                Ubah Password
               </NavLink>
             </ul>
           </div>
         </div>
         <div className="c-sidebar-logout">
-          <NavLink to="/">
-            <button className="btn c-btn">Logout</button>
-          </NavLink>
+          <button className="btn c-btn" onClick={logout}>
+            Logout
+          </button>
         </div>
       </div>
     </Div>

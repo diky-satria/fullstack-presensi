@@ -7,25 +7,37 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "rm -rf build/ && tsc -w",
     "dev": "nodemon build/index.js",
-    "img": "copyfiles -f ./src/public/in/* build/public/in"
+    "img": "copyfiles -f ./src/public/out/* build/public/out"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.7",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/nodemailer": "^6.4.9",
+    "@types/passport": "^1.0.12",
     "sequelize-cli": "^6.6.1",
     "typescript": "^5.1.6"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "express-validator": "^6.14.3",
+    "jsonwebtoken": "^9.0.1",
+    "moment": "^2.29.4",
     "mysql2": "^3.5.2",
+    "nodemailer": "^6.9.4",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "sequelize": "^6.32.1"
   }
 }

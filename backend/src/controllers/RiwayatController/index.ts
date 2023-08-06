@@ -5,9 +5,9 @@ import { QueryTypes } from "sequelize";
 import { from_date, to_date } from "../../helpers";
 
 class RiwayatController implements IController {
-  index = async (req: Request, res: Response): Promise<Response> => {
+  index = async (req: Request | any, res: Response): Promise<Response> => {
     try {
-      let user_id: number = 2; // diky satria ramadanu
+      let user_id: number = req.user.id; // diky satria ramadanu
       let fd: any = req.query.from_date || from_date();
       let td: any = req.query.to_date || to_date();
 
@@ -23,7 +23,7 @@ class RiwayatController implements IController {
       );
       let total_page: number = Math.ceil(total[0].total / limit);
 
-      // format date sql %Y-%m-%d
+      // format date sql DATE_FORMAT(column_name, "%Y-%m-%d")
       let data = await sequelize.query(
         `WITH RECURSIVE date_range AS (SELECT DATE('${fd}') AS date UNION ALL SELECT DATE_ADD(date, INTERVAL 1 DAY) FROM date_range WHERE date < '${td}' ) SELECT date, DATE_FORMAT(tgl_in, "%H:%i") as tgl_in, DATE_FORMAT(tgl_out, "%H:%i") as tgl_out, status_in, status_out, foto_in, foto_out, lokasi_in, lokasi_out, hari_liburs.nama as libur, users.id as user_id, users.nama as nama FROM date_range LEFT JOIN (SELECT * FROM absens WHERE user_id = ${user_id}) as absens ON date_range.date = absens.date_now LEFT JOIN hari_liburs ON date_range.date = hari_liburs.tanggal LEFT JOIN users ON absens.user_id = users.id WHERE user_id = ${user_id} or user_id is null ORDER BY date ASC limit ${offset},${limit}`,
         { type: QueryTypes.SELECT }
