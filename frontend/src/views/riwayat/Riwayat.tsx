@@ -213,77 +213,81 @@ export default function Riwayat() {
                   </Button>
                 </div>
               </div>
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Tanggal</th>
-                    <th>Absen masuk</th>
-                    <th>Absen pulang</th>
-                    <th>Status masuk</th>
-                    <th>Status pulang</th>
-                    <th>Keterangan libur</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((d: TRiwayat, index: number) => {
-                    return (
-                      <tr
-                        key={index}
-                        className={
-                          d.libur ? "tr-custom table-active" : "tr-custom"
-                        }
-                        onClick={() =>
-                          openModal(
-                            d.date,
-                            d.tgl_in,
-                            d.tgl_out,
-                            d.status_in,
-                            d.status_out,
-                            d.foto_in,
-                            d.foto_out,
-                            d.lokasi_in,
-                            d.lokasi_out,
-                            d.libur
-                          )
-                        }
-                      >
-                        <td>{d.date}</td>
-                        <td>{d.tgl_in ? d.tgl_in : "-"}</td>
-                        <td>{d.tgl_out ? d.tgl_out : "-"}</td>
-                        <td>
-                          {!d.libur ? absenKondisi(d.status_in, d.date) : "-"}
-                        </td>
-                        <td>
-                          {!d.libur ? absenKondisi(d.status_out, d.date) : "-"}
-                        </td>
-                        <td>
-                          {new Date(`${d.date}`).getTime() >
-                          new Date().getTime() ? (
-                            d.libur ? (
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Tanggal</th>
+                      <th>Absen masuk</th>
+                      <th>Absen pulang</th>
+                      <th>Status masuk</th>
+                      <th>Status pulang</th>
+                      <th>Keterangan libur</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((d: TRiwayat, index: number) => {
+                      return (
+                        <tr
+                          key={index}
+                          className={
+                            d.libur ? "tr-custom table-active" : "tr-custom"
+                          }
+                          onClick={() =>
+                            openModal(
+                              d.date,
+                              d.tgl_in,
+                              d.tgl_out,
+                              d.status_in,
+                              d.status_out,
+                              d.foto_in,
+                              d.foto_out,
+                              d.lokasi_in,
+                              d.lokasi_out,
+                              d.libur
+                            )
+                          }
+                        >
+                          <td>{d.date}</td>
+                          <td>{d.tgl_in ? d.tgl_in : "-"}</td>
+                          <td>{d.tgl_out ? d.tgl_out : "-"}</td>
+                          <td>
+                            {!d.libur ? absenKondisi(d.status_in, d.date) : "-"}
+                          </td>
+                          <td>
+                            {!d.libur
+                              ? absenKondisi(d.status_out, d.date)
+                              : "-"}
+                          </td>
+                          <td>
+                            {new Date(`${d.date}`).getTime() >
+                            new Date().getTime() ? (
+                              d.libur ? (
+                                <span className="badge rounded-pill bg-danger">
+                                  {d.libur}
+                                </span>
+                              ) : (
+                                <span className="badge rounded-pill bg-dark">
+                                  Masuk
+                                  {/* belum dimulai */}
+                                </span>
+                              )
+                            ) : d.libur ? (
                               <span className="badge rounded-pill bg-danger">
                                 {d.libur}
                               </span>
                             ) : (
                               <span className="badge rounded-pill bg-dark">
                                 Masuk
-                                {/* belum dimulai */}
                               </span>
-                            )
-                          ) : d.libur ? (
-                            <span className="badge rounded-pill bg-danger">
-                              {d.libur}
-                            </span>
-                          ) : (
-                            <span className="badge rounded-pill bg-dark">
-                              Masuk
-                            </span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
               <div
                 className="row"
                 style={{

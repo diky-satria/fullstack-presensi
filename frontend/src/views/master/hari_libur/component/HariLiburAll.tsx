@@ -134,41 +134,42 @@ export default function HariLiburAll(props: Props) {
               </Button>
             </div>
           </div>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Keterangan libur</th>
-                <th>Opsi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {props.data.map((d: THariLibur, index: number) => {
-                return (
-                  <tr key={index} className={d.nama ? "table-active" : ""}>
-                    <td>
-                      {props.page > 0
-                        ? props.page * props.limit + index + 1
-                        : index + 1}
-                    </td>
-                    <td>{d.tanggal}</td>
-                    <td>
-                      {d.nama ? (
-                        <span className="badge rounded-pill bg-danger">
-                          {d.nama}
-                        </span>
-                      ) : (
-                        <span className="badge rounded-pill bg-dark">
-                          Masuk
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      {new Date(`${d.tanggal} 00:00:00`).getTime() >
-                        new Date().getTime() && d.nama ? (
-                        <>
-                          {/* <Button
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Tanggal</th>
+                  <th>Keterangan libur</th>
+                  <th>Opsi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {props.data.map((d: THariLibur, index: number) => {
+                  return (
+                    <tr key={index} className={d.nama ? "table-active" : ""}>
+                      <td>
+                        {props.page > 0
+                          ? props.page * props.limit + index + 1
+                          : index + 1}
+                      </td>
+                      <td>{d.tanggal}</td>
+                      <td>
+                        {d.nama ? (
+                          <span className="badge rounded-pill bg-danger">
+                            {d.nama}
+                          </span>
+                        ) : (
+                          <span className="badge rounded-pill bg-dark">
+                            Masuk
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        {new Date(`${d.tanggal} 00:00:00`).getTime() >
+                          new Date().getTime() && d.nama ? (
+                          <>
+                            {/* <Button
                             size="small"
                             style={{
                               backgroundColor: "#12B0A2",
@@ -180,32 +181,33 @@ export default function HariLiburAll(props: Props) {
                           >
                             Edit
                           </Button> */}
-                          <Popconfirm
-                            placement="left"
-                            title={`Apa kamu yakin?`}
-                            description={`ingin menjadikan hari libur "${d.nama}" menjadi`}
-                            onConfirm={() => masuk(d.tanggal)}
-                            okText="Ya"
-                            cancelText="Tidak"
-                          >
-                            <Button
-                              type="primary"
-                              size="small"
-                              style={{ backgroundColor: "#212529" }}
+                            <Popconfirm
+                              placement="left"
+                              title={`Apa kamu yakin?`}
+                              description={`ingin menjadikan hari libur "${d.nama}" menjadi`}
+                              onConfirm={() => masuk(d.tanggal)}
+                              okText="Ya"
+                              cancelText="Tidak"
                             >
-                              Masuk
-                            </Button>
-                          </Popconfirm>
-                        </>
-                      ) : (
-                        "-"
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                              <Button
+                                type="primary"
+                                size="small"
+                                style={{ backgroundColor: "#212529" }}
+                              >
+                                Masuk
+                              </Button>
+                            </Popconfirm>
+                          </>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
           <div
             className="row"
             style={{
