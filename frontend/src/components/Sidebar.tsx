@@ -3,13 +3,17 @@ import styled from "styled-components";
 import logo from "../img/like.png";
 import {
   AiFillWindows,
-  AiFillApple,
-  AiFillAndroid,
   AiOutlineArrowDown,
   AiFillHdd,
   AiFillPieChart,
   AiFillContacts,
 } from "react-icons/ai";
+import {
+  BsFillKeyFill,
+  BsFillPeopleFill,
+  BsCalendarDateFill,
+  BsFillLayersFill,
+} from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import Clock from "react-clock";
 import "react-clock/dist/Clock.css";
@@ -140,7 +144,7 @@ export default function Sidebar(props: Props) {
                             onClick={(e) => activeMenu(e)}
                             id="jabatan"
                           >
-                            <AiFillApple className="c-icon-nav-link" />
+                            <BsFillLayersFill className="c-icon-nav-link" />
                             Jabatan
                           </NavLink>
                           <NavLink
@@ -149,7 +153,7 @@ export default function Sidebar(props: Props) {
                             onClick={(e) => activeMenu(e)}
                             id="karyawan"
                           >
-                            <AiFillAndroid className="c-icon-nav-link" />
+                            <BsFillPeopleFill className="c-icon-nav-link" />
                             Karyawan
                           </NavLink>
                           <NavLink
@@ -158,7 +162,7 @@ export default function Sidebar(props: Props) {
                             onClick={(e) => activeMenu(e)}
                             id="hari_libur"
                           >
-                            <AiFillAndroid className="c-icon-nav-link" />
+                            <BsCalendarDateFill className="c-icon-nav-link" />
                             Hari Libur
                           </NavLink>
                         </div>
@@ -197,7 +201,7 @@ export default function Sidebar(props: Props) {
                 className="nav-item"
                 onClick={(e) => activeMenu(e)}
               >
-                <AiFillWindows className="c-icon-nav-link" />
+                <BsFillKeyFill className="c-icon-nav-link" />
                 Ubah Password
               </NavLink>
             </ul>
