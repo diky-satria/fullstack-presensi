@@ -226,6 +226,23 @@ class AbsenController implements IController {
               lokasi_out: lokasi,
             });
           }
+
+          // ---------------------------
+          // table absens harus ada satu data absens dengan column date_now hari ini, yang selain date_now nya harus null, ini dilakukan karena ketika query di halaman riwayat tapi user_id nya tidak ada, maka yang berurutan itu beberapa akan hilang. Maka dilakukanlah cara ini
+
+          // cek dulu apakah ada data di table absens dengan date_now hari ini dan user_id nya null
+          let kondisi_isTgl_isUserId_null = await sequelize.query(
+            `SELECT * FROM absens WHERE date_now = '${
+              at().tgl_sekarang
+            }' and user_id is null`,
+            { type: QueryTypes.SELECT }
+          );
+          if (kondisi_isTgl_isUserId_null.length <= 0) {
+            await Models.absens.create({
+              date_now: date,
+            });
+          }
+          // --------------------------
         }
 
         return res.status(200).json({

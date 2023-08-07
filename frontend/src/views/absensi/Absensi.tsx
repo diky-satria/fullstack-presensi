@@ -23,6 +23,8 @@ export default function Contact() {
   const [sudahAbsen, setSudahAbsen] = useState<boolean>(false);
   const [messageAbsen, setMessageAbsen] = useState<string>("");
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     getTombolAbsensi();
   }, []);
@@ -58,6 +60,7 @@ export default function Contact() {
 
   // val adalah masuk, pulang, belum_dimulai
   const simpan = async (val: string) => {
+    setLoading(true);
     if (latitude === 0 || longitude === 0) {
       return ToastError("Lokasi anda tidak terdeteksi", "top-center");
     }
@@ -77,6 +80,7 @@ export default function Contact() {
     } else {
       ToastSuccess(response.data.message, "top-center");
     }
+    setLoading(false);
   };
 
   return (
@@ -113,7 +117,7 @@ export default function Contact() {
                 {imgSrc ? (
                   <Button
                     type="primary"
-                    loading={false}
+                    loading={loading}
                     onClick={() => simpan(tombolType)}
                     style={{
                       backgroundColor: "#12B0A2",
