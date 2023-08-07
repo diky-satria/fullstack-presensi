@@ -80,7 +80,6 @@ export default function Contact() {
     } else {
       ToastSuccess(response.data.message, "top-center");
     }
-    setLoading(false);
   };
 
   return (
